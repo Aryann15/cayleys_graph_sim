@@ -73,9 +73,34 @@
             links.push({ source: i, target });
           });
         });
-
         return { nodes, links };
       }
+
+      function visualizeCayleysGraph() {
+            const order = parseInt(document.getElementById('group-order').value);
+            const generatorsInput = document.getElementById('generating-set').value;
+            const generators = generatorsInput.split(',').map(Number);
+
+            const graph = generateCayleysGraph(order, generators);
+
+
+            const width = 800;
+            const height = 600;
+
+            const colorScale = d3.scaleOrdinal(d3.schemeCategory10);
+
+            const svg = d3.select('#graph-container')
+                .html('')
+                .append('svg')
+                .attr('width', width)
+                .attr('height', height);
+
+            const simulation = d3.forceSimulation(graph.nodes)
+                .force('link', d3.forceLink(graph.links).id(d => d.id))
+                .force('charge', d3.forceManyBody().strength(-100))
+                .force('center', d3.forceCenter(width / 2, height / 2));
+
+
     </script>
   </body>
 </html>
