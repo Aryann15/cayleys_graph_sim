@@ -121,6 +121,32 @@
                     .on('end', dragended));
 
 
+                    const label = svg.append('g')
+                .selectAll('text')
+                .data(graph.nodes)
+                .enter().append('text')
+                .attr('class', 'label')
+                .text(d => d.label);
+
+            node.append('title')
+                .text(d => `Group: ${d.group}\nElement: ${d.label}`);
+
+            simulation.on('tick', () => {
+                link
+                    .attr('x1', d => d.source.x)
+                    .attr('y1', d => d.source.y)
+                    .attr('x2', d => d.target.x)
+                    .attr('y2', d => d.target.y);
+
+                node
+                    .attr('cx', d => d.x)
+                    .attr('cy', d => d.y);
+
+                label
+                    .attr('x', d => d.x + 10)
+                    .attr('y', d => d.y - 10);
+            });
+
     </script>
   </body>
 </html>
