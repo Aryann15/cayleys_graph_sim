@@ -1,62 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>cayley's graph visualizer</title>
     <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-        }
+      body {
+        font-family: "Arial", sans-serif;
+        margin: 0;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+      }
 
-        #graph-container {
-            width: 80vw;
-            height: 80vh;
-            border: 1px solid #ccc;
-            position: relative;
-        }
+      #graph-container {
+        width: 80vw;
+        height: 80vh;
+        border: 1px solid #ccc;
+        position: relative;
+      }
 
-        .node {
-            fill: #1f78b4;
-            stroke: #fff;
-            stroke-width: 2px;
-            cursor: pointer;
-            transition: r 0.2s ease-in-out;
-        }
+      .node {
+        fill: #1f78b4;
+        stroke: #fff;
+        stroke-width: 2px;
+        cursor: pointer;
+        transition: r 0.2s ease-in-out;
+      }
 
-        .link {
-            stroke: #999;
-            stroke-opacity: 0.6;
-        }
+      .link {
+        stroke: #999;
+        stroke-opacity: 0.6;
+      }
 
-        .label {
-            font-size: 12px;
-            pointer-events: none;
-        }
+      .label {
+        font-size: 12px;
+        pointer-events: none;
+      }
 
-        input, button {
-            margin: 10px;
-        }
+      input,
+      button {
+        margin: 10px;
+      }
     </style>
-</head>
-<body>
-
+  </head>
+  <body>
     <label for="group-order">Group Order:</label>
-    <input type="number" id="group-order" value="6">
+    <input type="number" id="group-order" value="6" />
 
     <label for="generating-set">Generating Set (comma-separated):</label>
-    <input type="text" id="generating-set" value="1,5">
+    <input type="text" id="generating-set" value="1,5" />
 
     <button onclick="visualizeCayleysGraph()">Visualize Graph</button>
 
     <div id="graph-container"></div>
-    
-</body>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script>
+      function generateCayleysGraph(order, generators) {
+        const nodes = Array.from({ length: order }, (_, i) => ({
+          id: i,
+          label: `Element ${i}`,
+          group: i % 2 === 0 ? "even" : "odd",
+        }));
+        const links = [];
+
+        nodes.forEach((node, i) => {
+          generators.forEach((gen) => {
+            const target = (i + gen) % order;
+            links.push({ source: i, target });
+          });
+        });
+
+        return { nodes, links };
+      }
+    </script>
+  </body>
 </html>
